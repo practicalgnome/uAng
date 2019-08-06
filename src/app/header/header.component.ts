@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  @Output() navbarClick = new EventEmitter<string>();
   constructor() { }
   collapsed = true;
   ngOnInit() {
     console.log(this.collapsed);
   }
 
+  onNavbarClick($event) {
+    this.navbarClick.emit($event.target.textContent);
+  }
 }
