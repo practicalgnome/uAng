@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {Ingredient} from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 
@@ -7,7 +7,7 @@ import { ShoppingListService } from '../shopping-list.service';
   templateUrl: './shopping-list-edit.component.html',
   styleUrls: ['./shopping-list-edit.component.css']
 })
-export class ShoppingListEditComponent implements OnInit {
+export class ShoppingListEditComponent {
   @ViewChild('nameInput', {static: false}) nameInputRef: ElementRef;
   @ViewChild('amountInput', {static: false}) amountInputRef: ElementRef;
 
@@ -16,7 +16,7 @@ export class ShoppingListEditComponent implements OnInit {
   onAdd() {
     const itemName = this.nameInputRef.nativeElement.value;
     const  itemAmount = this.amountInputRef.nativeElement.value;
-    const addedItem = new Ingredient(itemName, itemAmount);
+    const addedItem = [new Ingredient(itemName, itemAmount)];
     this.listService.addIngredient(addedItem);
   }
 }

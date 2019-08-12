@@ -15,9 +15,8 @@ export class ShoppingListService {
     return this.ingredients.slice();
   }
 
-  addIngredient(ingredient: Ingredient) {
-    this.ingredients = [...this.ingredients, ingredient];
-    this.ingredientAdded.emit(this.ingredients);
-    console.log(this.ingredients);
+  addIngredient(ingredients: Ingredient[]) {
+    this.ingredients = [...this.ingredients, ...ingredients];
+    this.ingredientAdded.emit([...this.ingredients]);
   }
 }
