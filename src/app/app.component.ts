@@ -6,9 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  activeLink = 'Shopping List';
 
-  onNavigation(link) {
-    this.activeLink = link;
-  }
 }

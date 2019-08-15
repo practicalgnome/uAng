@@ -1,9 +1,8 @@
-<app-header (navbarClick)="onNavigation($event)"></app-header>
+<app-header></app-header>
 <div class="container">
   <div class="row">
-      <div class="col-md-12" [ngSwitch]="activeLink">
-        <app-recipes *ngSwitchCase="'Recipes'"></app-recipes>
-        <app-shopping-list *ngSwitchCase="'Shopping List'"></app-shopping-list>
+      <div class="col-md-12">
+        <router-outlet></router-outlet>
       </div>
     </div>
 </div>
