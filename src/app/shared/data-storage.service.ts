@@ -1,18 +1,41 @@
 import { Injectable } from '@angular/core';
-import {Recipe} from '../recipes/recipe.model';
+
+import { HttpClient } from '@angular/common/http';
+import { RecipesService } from '../recipes/recipes.service';
+import { Recipe } from '../recipes/recipe.model';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStorageService {
 
-  constructor() { }
+  constructor(private http: HttpClient,
+              private recipesService: RecipesService) { }
 
-  saveData(data: Recipe[]) {
-    console.log('saving...');
+  saveData() {
+    const recipes = this.recipesService.getRecipes();
+    this.http.put('https://uang-27d3f.firebaseio.com/recipes.json', recipes)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   fetchData() {
-    console.log('fetching...');
+    return this.http
+      .get<Recipe[]>('https://uang-27d3f.firebaseio.com/recipes.json')
+      .pipe(map(recipes => {
+        return recipes.map(
+          recipe => {
+            return {
+              ...recipe,
+              ingredients: recipe.ingredients ? recipe.ingredients : []};
+          }
+        );
+      }),
+        tap(recipes => {
+          this.recipesService.setRecipes(recipes);
+        })
+      );
   }
 }
