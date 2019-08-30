@@ -36,7 +36,9 @@ export class RecipesService {
   }
 
   getRecipes() {
-    return this.recipes.slice();
+    if (this.recipes) {
+      return this.recipes.slice();
+    }
   }
 
   getRecipe(index) {
