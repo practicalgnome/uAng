@@ -15,6 +15,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { EmptyDetailComponent } from './recipes/recipe-detail/empty-detail/empty-detail.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthComponent } from './auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     RecipeDetailComponent,
     DropdownDirective,
     EmptyDetailComponent,
-    RecipeEditComponent
+    RecipeEditComponent,
+    AuthComponent
   ],
   imports: [
     BrowserModule,
