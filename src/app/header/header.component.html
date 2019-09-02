@@ -1,5 +1,4 @@
 <nav class="navbar navbar-default">
-  <button class="btn btn-primary" (click)="onActivate()">Activate</button>
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" (click)="collapsed = !collapsed">
@@ -9,11 +8,20 @@
     </div>
     <div class="navbar-collapse" [class.collapse]="collapsed" (window:resize)="collapsed = true">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/auth" class="navbar-nav-list">Authenticate</a></li>
-        <li routerLinkActive="active"><a routerLink="/recipes" class="navbar-nav-recipes">Recipes</a></li>
-        <li routerLinkActive="active"><a routerLink="/shopping-list" class="navbar-nav-list">Shopping List</a></li>
+        <li routerLinkActive="active" *ngIf="!loggedIn">
+          <a routerLink="/auth" class="navbar-nav-list">Authenticate</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="loggedIn">
+          <a routerLink="/recipes" class="navbar-nav-recipes">Recipes</a>
+        </li>
+        <li routerLinkActive="active">
+          <a routerLink="/shopping-list" class="navbar-nav-list">Shopping List</a
+          ></li>
       </ul>
-      <ul class="nav navbar-nav navbar-right">
+      <ul *ngIf="loggedIn" class="nav navbar-nav navbar-right">
+        <li>
+          <a (click)="onLogout()">Logout</a>
+        </li>
         <li class="dropdown" appDropdown>
           <a class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
           <ul class="dropdown-menu">
