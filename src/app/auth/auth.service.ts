@@ -5,6 +5,9 @@ import { BehaviorSubject, throwError } from 'rxjs';
 import { User } from './user.model';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
+import { Store } from '@ngrx/store';
+import * as fromApp from '../store/app.reducer';
+import * as AuthActions from './store/auth.actions';
 
 export interface AuthResponseData {
   idToken:	string;
@@ -19,12 +22,13 @@ export interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-  user = new BehaviorSubject<User>(null);
+  // user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer;
 
   constructor(
     private http: HttpClient,
-    private router: Router) { }
+    private router: Router,
+    private store: Store<fromApp.AppState>) { }
 
   autoLogin() {
     const userData = JSON.parse(localStorage.getItem('userData'));
@@ -38,7 +42,13 @@ export class AuthService {
       new Date(userData._tokenExpiration));
 
     if (loadedUser.token) {
-      this.user.next(loadedUser);
+      // this.user.next(loadedUser);
+      this.store.dispatch(new AuthActions.Login({
+        email: loadedUser.email,
+        userId: loadedUser.id,
+        token: loadedUser.token,
+        expirationDate: new Date(userData._tokenExpiration)
+      }));
       const expDuration = new Date(userData._tokenExpiration).getTime() - new Date().getTime();
       this.autoLogout(expDuration);
     }
@@ -75,7 +85,8 @@ export class AuthService {
   }
 
   logout() {
-    this.user.next(null);
+    // this.user.next(null);
+    this.store.dispatch(new AuthActions.Logout());
     localStorage.removeItem('userData');
     this.router.navigate(['']);
     if (this.tokenExpirationTimer) {
@@ -97,7 +108,13 @@ export class AuthService {
       resData.localId,
       resData.idToken,
       expDate);
-    this.user.next(user);
+    // this.user.next(user);
+    this.store.dispatch(new AuthActions.Login({
+      email: user.email,
+      userId: user.id,
+      token: user.token,
+      expirationDate: expDate
+    }));
     this.autoLogout(+resData.expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
